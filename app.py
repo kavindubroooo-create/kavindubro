@@ -1,0 +1,96 @@
+import pandas as pd
+import re
+import requests
+import streamlit as st
+
+# Page Configuration
+st.set_page_config(
+    page_title="Facebook Numeric ID Extractor", page_icon="🚀", layout="wide"
+)
+
+# Hide Streamlit Menu, Footer, Deploy Button, and Header for clean UI
+hide_menu_style = """
+<style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+.stAppDeployButton {display:none;}
+header {visibility: hidden;}
+</style>
+"""
+st.markdown(hide_menu_style, unsafe_allow_html=True)
+
+# Advanced Cyberpunk UI Styling with Kavindu Bro Badge
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background-color: #090a0f;
+        color: #00ffcc;
+        font-family: 'Courier New', monospace;
+    }
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #00ffcc33;
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+    }
+    .main-header {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #00ffcc;
+        text-shadow: 0 0 10px rgba(0,255,204,0.5);
+    }
+    .credit-badge {
+        background: #12151c;
+        border: 1px solid #00ffcc55;
+        padding: 5px 15px;
+        border-radius: 5px;
+        font-size: 0.9rem;
+        color: #00ffcc;
+    }
+    </style>
+    
+    <div class="header-container">
+        <div class="main-header">🚀 Facebook Numeric ID Extractor</div>
+        <div class="credit-badge">By Kavindu Bro</div>
+    </div>
+""",
+    unsafe_allow_html=True,
+)
+
+# Main App Interface
+st.write(
+    "Paste your Facebook links or text below to extract and copy all IDs in"
+    " bulk:"
+)
+
+# User Input for Bulk Data
+input_data = st.text_area(
+    "Facebook Links / Bulk Text:",
+    height=150,
+    placeholder="Paste multiple links here...",
+)
+
+if st.button("Extract All IDs"):
+  if input_data:
+    # Extract links or IDs
+    urls = re.findall(r"https?://[^\s]+", input_data)
+
+    if urls:
+      # Combine all extracted links/IDs into a single bulk text block
+      bulk_result = "\n".join(urls)
+
+      st.success(
+          f"Successfully extracted {len(urls)} items! Copy all at once below:"
+      )
+
+      # Single code block with copy button for the entire bulk data
+      st.code(bulk_result, language="text")
+    else:
+      st.warning(
+          "No valid links found in the text. Please check your input."
+      )
+  else:
+    st.warning("Please enter some data or links first.")
